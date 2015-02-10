@@ -1,11 +1,12 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="rethink_electric_gripper">
-  <xacro:macro name="rethink_electric_gripper" params="side gripper_side">
+  <xacro:macro name="rethink_electric_gripper" params="side gripper_side finger_mesh">
     <!-- Base of end effector -->
-    <link name="${side}_gripper_base">
+    <link name="${side}_electric_gripper_base">
       <gravity>0</gravity>
       <visual>
-        <origin rpy="-1.57079632679 3.1415 0" xyz="0.00 0.00 0.025"/>
+        <!-- origin rpy="-1.57079632679 3.1415 0" xyz="0.00 0.00 0.025"/-->
+        <origin rpy="-1.57079632679 3.1415 0" xyz="0 0 0"/>
         <geometry>
           <mesh filename="package://baxter_description/meshes/electric_gripper/electric_gripper_base.DAE"/>
         </geometry>
@@ -25,49 +26,27 @@
         <inertia ixx="2e-08" ixy="0" ixz="0" iyy="3e-08" iyz="0" izz="2e-08"/>
       </inertial>
     </link>
-    <link name="${side}_gripper">
-      <gravity>0</gravity>
-      <visual>
-        <origin rpy="0 0 0" xyz="0 0 0"/>
-        <geometry>
-          <box size="0.01 0.01 0.01"/>
-        </geometry>
-        <material name="rblack">
-          <color rgba="0 0 0 1"/>
-        </material>
-      </visual>
-      <inertial>
-        <origin rpy="0 0 0" xyz="0.000000 0.000000 0.000000"/>
-        <mass value="0.0001"/>
-        <inertia ixx="1e-08" ixy="0" ixz="0" iyy="1e-08" iyz="0" izz="1e-08"/>
-      </inertial>
-    </link>
-
-    <!-- Finger mesh index -->
-    <!--mesh filename="package://baxter_description/meshes/electric_gripper/fingers/00017816.DAE" /--> <!--basic_hard_tip-->
-    <!--mesh filename="package://baxter_description/meshes/electric_gripper/fingers/00030515.DAE" /--> <!--extended_wide -->
-    <!--mesh filename="package://baxter_description/meshes/electric_gripper/fingers/00030516.DAE" /--> <!-- standard_wide -->
-    <!--mesh filename="package://baxter_description/meshes/electric_gripper/fingers/00030517.DAE" /--> <!-- standard_narrow -->
-    <!--mesh filename="package://baxter_description/meshes/electric_gripper/fingers/00030518.DAE" /--> <!--extended_narrow /-->
-    <!--mesh filename="package://baxter_description/meshes/electric_gripper/fingers/00030535.DAE" /--> <!-- limiter -->
 
     <!-- Right finger -->
     <link name="${side}_gripper_r_finger">
       <gravity>0</gravity>
       <visual>
-        <origin rpy="0 1.57079632679 0" xyz="0.007 -0.036 0.0135"/>
+        <!-- origin rpy="0 1.57079632679 0" xyz="0.007 -0.036 0.0135"/ -->
+        <origin rpy="0 0 1.57079632679" xyz="0 0 0"/>
         <geometry>
-          <mesh filename="package://baxter_description/meshes/electric_gripper/fingers/extended_narrow.DAE" /> <!-- Long left finger-->
+          <mesh filename="${finger_mesh}" />
         </geometry>
       </visual>
       <collision>
-        <origin rpy="0 1.57079632679 0" xyz="0.007 -0.036 0.0135"/>
+        <!-- origin rpy="0 1.57079632679 0" xyz="0.007 -0.036 0.0135"/ -->
+        <origin rpy="0 0 1.57079632679" xyz="0 0 0"/>
         <geometry>
-          <mesh filename="package://baxter_description/meshes/electric_gripper/fingers/extended_narrow.DAE" /> <!-- Long left finger-->
+          <mesh filename="${finger_mesh}" />
         </geometry>
       </collision>
       <inertial>
-        <origin rpy="0 1.57079632679 0" xyz="0.007 -0.036 0.0135"/>
+        <!-- origin rpy="0 1.57079632679 0" xyz="0.007 -0.036 0.0135"/ -->
+        <origin rpy="0 0 1.57079632679" xyz="0 0 0"/>
         <!-- <mass value="0.00094542"/> -->
         <!-- <inertia ixx="2e-08" ixy="0" ixz="0" iyy="3e-08" iyz="0" izz="2e-08"/> -->
         <mass value="0.01"/>
@@ -79,19 +58,22 @@
     <link name="${side}_gripper_l_finger">
       <gravity>0</gravity>
       <visual>
-        <origin rpy="0 -1.57079632679 0" xyz="0.007 -0.036 -0.0135"/>
+        <!-- origin rpy="0 -1.57079632679 0" xyz="0.007 -0.036 -0.0135"/ -->
+        <origin rpy="0 0 -1.57079632679" xyz="0 0 0"/>
         <geometry>
-          <mesh filename="package://baxter_description/meshes/electric_gripper/fingers/extended_narrow.DAE" />
+          <mesh filename="${finger_mesh}" />
         </geometry>
       </visual>
       <collision>
-        <origin rpy="0 -1.57079632679 0" xyz="0.007 -0.036 -0.0135"/>
+        <!-- origin rpy="0 -1.57079632679 0" xyz="0.007 -0.036 -0.0135"/ -->
+        <origin rpy="0 0.0 -1.57079632679" xyz="0 0 0"/>
         <geometry>
-          <mesh filename="package://baxter_description/meshes/electric_gripper/fingers/extended_narrow.DAE" /> <!-- Long left finger-->
+          <mesh filename="${finger_mesh}" />
         </geometry>
       </collision>
       <inertial>
-        <origin rpy="0 -1.57079632679 0" xyz="0.007 -0.036 -0.0135"/>
+        <!-- origin rpy="0 -1.57079632679 0" xyz="0.007 -0.036 -0.0135"/ -->
+        <origin rpy="0 0 -1.57079632679" xyz="0 0 0"/>
         <!-- <mass value="0.00094542"/> -->
         <!-- <inertia ixx="2e-08" ixy="0" ixz="0" iyy="3e-08" iyz="0" izz="2e-08"/> -->
         <mass value="0.01"/>
@@ -99,17 +81,17 @@
       </inertial>
     </link>
 
-
-    <!-- Base of Right end effector -->
-    <joint name="${side}_endpoint" type="fixed">
-      <origin rpy="1.57      0 0" xyz="-0.005 0.0 0.02"/>
-      <parent link="${side}_hand"/>
-      <child link="${side}_gripper"/>
+    <!-- Electric Gripper Base -->
+    <joint name="${gripper_side}_electric_gripper_base_joint" type="fixed">
+      <origin rpy="0 0 0" xyz="0 0 0.025"/>
+      <parent link="${side}_gripper_base"/>
+      <child link="${side}_electric_gripper_base"/>
     </joint>
 
     <!-- Right finger -->
     <joint name="${gripper_side}_gripper_r_finger_joint" type="prismatic">
-      <origin rpy="0 0 0" xyz="0.0 0.06 -0.035"/>
+      <!--origin rpy="1.57079632679 0 0" xyz="0.0 0.06 0.035"/-->
+      <origin rpy="0 0 0" xyz="0.0 0.035 0"/>
       <axis xyz="0 0 1"/>
       <parent link="${side}_gripper"/>
       <child link="${side}_gripper_r_finger"/>
@@ -119,7 +101,8 @@
 
     <!-- Left finger -->
     <joint name="${gripper_side}_gripper_l_finger_joint" type="prismatic">
-      <origin rpy="0 0 0" xyz="0.0 0.06 0.035"/>
+      <!--origin rpy="1.57079632679 0 0" xyz="0.0 0.06 0.035"/-->
+      <origin rpy="0 0 0" xyz="0 -0.035 0"/>
       <axis xyz="0 0 1"/>
       <parent link="${side}_gripper"/>
       <child link="${side}_gripper_l_finger"/>
