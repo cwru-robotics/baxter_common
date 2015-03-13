@@ -11,6 +11,6 @@
   <!--mesh filename="package://baxter_description/meshes/electric_gripper/fingers/00030518.DAE" /--> <!--extended_narrow /-->
   <!--mesh filename="package://baxter_description/meshes/electric_gripper/fingers/00030535.DAE" /--> <!-- limiter -->
 
-  <xacro:rethink_electric_gripper side="right" gripper_side="r" finger_mesh="package://baxter_description/meshes/electric_gripper/fingers/extended_rotated.DAE"/>
-  <xacro:rethink_electric_gripper side="left"  gripper_side="l" finger_mesh="package://baxter_description/meshes/electric_gripper/fingers/extended_rotated.DAE"/>
+  <xacro:rethink_electric_gripper side="right" gripper_side="r" finger_mesh="package://baxter_description/meshes/electric_gripper/fingers/extended_rotated.DAE" finger_mass="0.01" fingers_inverted="1" hole_number="1"/>
+  <xacro:rethink_electric_gripper side="left"  gripper_side="l" finger_mesh="package://baxter_description/meshes/electric_gripper/fingers/extended_rotated.DAE" finger_mass="0.01" fingers_inverted="1" hole_number="1"/>
 </robot>
