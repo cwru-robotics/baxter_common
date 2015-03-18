@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="rethink_electric_gripper">
   <xacro:property name="pi" value="3.1415926535897931" />
-  <xacro:macro name="rethink_electric_gripper" params=" side gripper_side finger_mesh hole_number fingers_inverted finger_mass">
+  <xacro:macro name="rethink_electric_gripper" params="side gripper_side  r_finger r_finger_slot add_r_finger_tip r_finger_tip l_finger l_finger_slot add_l_finger_tip l_finger_tip">
+
     <!-- Base of end effector -->
     <link name="${side}_gripper_electric_base">
       <gravity>0</gravity>
@@ -12,7 +13,7 @@
         </geometry>
       </visual>
       <collision>
-        <origin rpy="${-pi/2} ${pi}  0" xyz="0.0 0.0 0"/>
+        <origin rpy="${-pi/2} ${pi} 0" xyz="0.0 0.0 0"/>
         <geometry>
           <cylinder length="0.1" radius="0.029"/>
         </geometry>
@@ -21,55 +22,19 @@
         </material>
       </collision>
       <inertial>
-        <origin rpy="${-pi/2} ${pi} 0" xyz="0.000000 0.000000 0.000000"/>
-        <mass value="0.00094542"/>
+        <origin rpy="${-pi/2} ${pi} 0" xyz="0.0 0.0 0.0"/>
+        <mass value="0.3"/>
         <inertia ixx="2e-08" ixy="0" ixz="0" iyy="3e-08" iyz="0" izz="2e-08"/>
       </inertial>
     </link>
 
-    <!-- Right finger -->
-    <link name="${side}_gripper_r_finger">
-      <gravity>0</gravity>
-      <visual>
-        <origin rpy="0 0 ${fingers_inverted*pi + pi/2}" xyz="0 0 0"/>
-        <geometry>
-          <mesh filename="${finger_mesh}" />
-        </geometry>
-      </visual>
-      <collision>
-        <origin rpy="0 0 ${fingers_inverted*pi + pi/2}" xyz="0 0 0"/>
-        <geometry>
-          <mesh filename="${finger_mesh}" />
-        </geometry>
-      </collision>
-      <inertial>
-        <origin rpy="0 0 ${fingers_inverted*pi + pi/2}" xyz="0 0 0"/>
-        <mass value="${finger_mass}"/>
-        <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
-      </inertial>
-    </link>
+    <!-- Left finger link -->
+    <xacro:include filename="$(find baxter_description)/urdf/${l_finger}.xacro" />
+    <xacro:finger_xacro gripper_side="${side}" finger_side="l" reflect="1" finger_tip="${l_finger_tip}" add_finger_tip="${add_l_finger_tip}"/>
 
-    <!-- Left finger -->
-    <link name="${side}_gripper_l_finger">
-      <gravity>0</gravity>
-      <visual>
-        <origin rpy="0 0 ${fingers_inverted*pi - pi/2}" xyz="0 0 0"/>
-        <geometry>
-          <mesh filename="${finger_mesh}" />
-        </geometry>
-      </visual>
-      <collision>
-        <origin rpy="0 0 ${fingers_inverted*pi - pi/2}" xyz="0 0 0"/>
-        <geometry>
-          <mesh filename="${finger_mesh}" />
-        </geometry>
-      </collision>
-      <inertial>
-        <origin rpy="0 0 ${fingers_inverted*pi - pi/2}" xyz="0 0 0"/>
-        <mass value="${finger_mass}"/>
-        <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
-      </inertial>
-    </link>
+    <!-- Right finger link -->
+    <xacro:include filename="$(find baxter_description)/urdf/${r_finger}.xacro" />
+    <xacro:finger_xacro gripper_side="${side}" finger_side="r" reflect="-1" finger_tip="${r_finger_tip}" add_finger_tip="${add_r_finger_tip}"/>
 
     <!-- Electric Gripper Base -->
     <joint name="${gripper_side}_gripper_electric_base_joint" type="fixed">
@@ -80,26 +45,23 @@
 
     <!-- Left finger -->
     <joint name="${gripper_side}_gripper_l_finger_joint" type="prismatic">
-      <origin rpy="0 0 0" xyz="0 -0.0125 0.02"/>
+      <origin rpy="0 0 0" xyz="-0.0032 ${(l_finger_slot-1)*0.0095} 0.017"/>
       <axis xyz="0 1 0"/>
       <parent link="${side}_gripper_electric_base"/>
       <child link="${side}_gripper_l_finger"/>
-      <limit effort="20.0" lower="-0.0125" upper="0.0095" velocity="5.0"/> <!-- mimic joint for lower is open -->
+      <limit effort="20.0" lower="${(l_finger_slot-1)*0.0095 + 0.020833}" upper="${(l_finger_slot-1)*0.0095}" velocity="5.0"/>
       <dynamics damping="0.7" friction="0.0"/>
     </joint>
 
     <!-- Right finger -->
     <joint name="${gripper_side}_gripper_r_finger_joint" type="prismatic">
-      <origin rpy="0 0 0" xyz="0.0 0.0095 0.02"/>
+      <origin rpy="0 0 0" xyz="0.0 ${(r_finger_slot-1)*-0.0095} 0.017"/>
       <axis xyz="0 1 0"/>
       <parent link="${side}_gripper_electric_base"/>
       <child link="${side}_gripper_r_finger"/>
-      <limit effort="20.0" lower="-0.0125" upper="0.0095" velocity="5.0"/> <!-- upper is open -->
+      <limit effort="20.0" lower="${(r_finger_slot-1)*-0.0095 - 0.020833}" upper="${(r_finger_slot-1)*-0.0095}" velocity="5.0"/>
       <dynamics damping="0.7" friction="0.0"/>
-      <mimic joint="${gripper_side}_gripper_l_finger_joint" offset="0"
-             multiplier="-1" />
     </joint>
-
 
     <transmission name="gripper_${side}1">
       <type>transmission_interface/SimpleTransmission</type>
@@ -131,6 +93,3 @@
 
   </xacro:macro>
 </robot>
-
-
-

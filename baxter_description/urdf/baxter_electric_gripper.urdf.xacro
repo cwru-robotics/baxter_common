@@ -3,14 +3,8 @@
   <xacro:include filename="$(find baxter_description)/urdf/baxter.urdf" />
   <xacro:include filename="$(find baxter_description)/urdf/rethink_electric_gripper.xacro" />
 
-  <!-- Finger mesh index -->
-  <!--mesh filename="package://baxter_description/meshes/electric_gripper/fingers/00017816.DAE" /--> <!--basic_hard_tip-->
-  <!--mesh filename="package://baxter_description/meshes/electric_gripper/fingers/00030515.DAE" /--> <!--extended_wide -->
-  <!--mesh filename="package://baxter_description/meshes/electric_gripper/fingers/00030516.DAE" /--> <!-- standard_wide -->
-  <!--mesh filename="package://baxter_description/meshes/electric_gripper/fingers/00030517.DAE" /--> <!-- standard_narrow -->
-  <!--mesh filename="package://baxter_description/meshes/electric_gripper/fingers/00030518.DAE" /--> <!--extended_narrow /-->
-  <!--mesh filename="package://baxter_description/meshes/electric_gripper/fingers/00030535.DAE" /--> <!-- limiter -->
+  <xacro:rethink_electric_gripper side="left" gripper_side="l" l_finger="extended_narrow" l_finger_slot="1" add_l_finger_tip="true" l_finger_tip="paddle_tip" r_finger="extended_narrow" r_finger_slot="1" add_r_finger_tip="true" r_finger_tip="paddle_tip"/>
 
-  <xacro:rethink_electric_gripper side="right" gripper_side="r" finger_mesh="package://baxter_description/meshes/electric_gripper/fingers/extended_rotated.DAE" finger_mass="0.01" fingers_inverted="1" hole_number="1"/>
-  <xacro:rethink_electric_gripper side="left"  gripper_side="l" finger_mesh="package://baxter_description/meshes/electric_gripper/fingers/extended_rotated.DAE" finger_mass="0.01" fingers_inverted="1" hole_number="1"/>
+  <xacro:rethink_electric_gripper side="right" gripper_side="r" l_finger="extended_narrow" l_finger_slot="1" add_l_finger_tip="false" l_finger_tip="false" r_finger="extended_narrow" r_finger_slot="1" add_r_finger_tip="false" r_finger_tip="false"/>
+  <!-- basic_hard_tip -->
 </robot>
