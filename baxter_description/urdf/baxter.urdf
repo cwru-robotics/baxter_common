@@ -6,6 +6,14 @@
 <robot name="baxter">
   <link name="base">
   </link>
+  <!-- Used for fixing robot to Gazebo 'base_link' -->
+  <link name="world"/>
+
+  <joint name="fixed" type="fixed">
+    <parent link="world"/>
+    <child link="base"/>
+  </joint>
+
   <link name="torso">
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
@@ -1157,7 +1165,7 @@
   <joint name="kinect_joint" type="fixed">
       <axis xyz="0 1 0" />
       <!--origin xyz="0.55 0.03 1.585" rpy="0.06 0.95 0"/ -->
-      <origin xyz="0.15 0.0 0.95" rpy="0.04 0.955 0"/> 
+      <origin xyz="0.2 0.0 0.95" rpy="0.0 1.2 0"/> 
       <parent link="base"/>
       <child link="kinect_link"/>
   </joint>
